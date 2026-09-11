@@ -7,12 +7,14 @@ WORKDIR /app
 COPY . /app
 
 RUN corepack enable
-RUN apk add --no-cache python3 alpine-sdk
+RUN apk add --no-cache python3 alpine-sdk git
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --prod --frozen-lockfile
 
 RUN pnpm deploy --filter=@imput/cobalt-api --prod /prod/api
+
+RUN if [ ! -d .git ]; then git init -q && git config user.email build@render.local && git config user.name render-build && git add -A && git commit -q -m render-build --allow-empty; fi
 
 FROM base AS api
 WORKDIR /app
