@@ -14,7 +14,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 
 RUN pnpm deploy --filter=@imput/cobalt-api --prod /prod/api
 
-RUN if [ ! -d .git ]; then git init -q && git config user.email build@render.local && git config user.name render-build && git add -A && git commit -q -m render-build --allow-empty; fi
+RUN if [ ! -d .git ]; then git init -q && git config user.email build@render.local && git config user.name render-build && git remote add origin https://github.com/caglarsapmaz/cobalt.git && git add -A && git commit -q -m render-build --allow-empty; fi
 
 FROM base AS api
 WORKDIR /app
